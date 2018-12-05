@@ -12,6 +12,8 @@ import java.security.InvalidKeyException;
 
 /**
  * Helper class for Azure Queue related operations.
+ *
+ * WARNING: Not thread safe - assumes instances are not shared between threads.
  */
 // TODO: Custom StorageException wrapper exceptions or use StorageExceptions?
 public class QueueUtils
