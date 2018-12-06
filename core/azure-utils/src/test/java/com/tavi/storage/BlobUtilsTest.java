@@ -230,18 +230,10 @@ public class BlobUtilsTest
     public void testGetBlobReference() throws URISyntaxException, InvalidKeyException, IOException, StorageException {
         BlobUtils bu = BlobUtils.from(CONNECTION_STRING);
         {
-            {
-                setUpBlockBlob(true);
-                CloudBlob cloudBlob = bu.getBlockBlobReference(CONTAINER_NAME, BLOCK_BOB_NAME);
-                assertNotNull(cloudBlob);
-                assertTrue(cloudBlob.exists());
-            }
-            {
-                setUpBlockBlob(false);
-                CloudBlob cloudBlob = bu.getBlockBlobReference(CONTAINER_NAME, BLOCK_BOB_NAME);
-                assertNotNull(cloudBlob);
-                assertTrue(!cloudBlob.exists());
-            }
+            setUpBlockBlob(true);
+            CloudBlob cloudBlob = bu.getBlockBlobReference(CONTAINER_NAME, BLOCK_BOB_NAME);
+            assertNotNull(cloudBlob);
+            assertTrue(cloudBlob.exists());
         }
         {
             setUpServerBlob();
@@ -250,32 +242,16 @@ public class BlobUtilsTest
             assertTrue(cloudBlob.exists());
         }
         {
-            {
-                setUpAppendBlob(true);
-                CloudBlob cloudBlob = bu.getAppendBlobReference(CONTAINER_NAME, BLOCK_BOB_NAME);
-                assertNotNull(cloudBlob);
-                assertTrue(cloudBlob.exists());
-            }
-            {
-                setUpAppendBlob(false);
-                CloudBlob cloudBlob = bu.getAppendBlobReference(CONTAINER_NAME, BLOCK_BOB_NAME);
-                assertNotNull(cloudBlob);
-                assertTrue(!cloudBlob.exists());
-            }
+            setUpAppendBlob(true);
+            CloudBlob cloudBlob = bu.getAppendBlobReference(CONTAINER_NAME, BLOCK_BOB_NAME);
+            assertNotNull(cloudBlob);
+            assertTrue(cloudBlob.exists());
         }
         {
-            {
-                setUpPageBlob(true);
-                CloudBlob cloudBlob = bu.getPageBlobReference(CONTAINER_NAME, BLOCK_BOB_NAME);
-                assertNotNull(cloudBlob);
-                assertTrue(cloudBlob.exists());
-            }
-            {
-                setUpPageBlob(false);
-                CloudBlob cloudBlob = bu.getPageBlobReference(CONTAINER_NAME, BLOCK_BOB_NAME);
-                assertNotNull(cloudBlob);
-                assertTrue(!cloudBlob.exists());
-            }
+            setUpPageBlob(true);
+            CloudBlob cloudBlob = bu.getPageBlobReference(CONTAINER_NAME, BLOCK_BOB_NAME);
+            assertNotNull(cloudBlob);
+            assertTrue(cloudBlob.exists());
         }
     }
 }

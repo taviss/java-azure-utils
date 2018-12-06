@@ -79,8 +79,11 @@ public class TableUtils
      */
     public TableResult execute(String tableName, boolean createIfNotExists, TableOperation operation) throws URISyntaxException, StorageException, TableNotFoundException {
         CloudTable table = getTableReference(tableName);
-        if(table.exists() || createIfNotExists) {
+
+        if(createIfNotExists)
             table.createIfNotExists();
+
+        if(table.exists()) {
             return table.execute(operation);
         } else {
             throw new TableNotFoundException("Unable to locate table " + tableName);

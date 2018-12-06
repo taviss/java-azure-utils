@@ -140,7 +140,7 @@ public class BlobUtils
         if(blob.exists()) {
             return blob.downloadText();
         } else {
-            throw new BlobNotFoundException();
+            throw new BlobNotFoundException("Unable to locate blob " + blockBlobName + " inside " + containerName);
         }
     }
 

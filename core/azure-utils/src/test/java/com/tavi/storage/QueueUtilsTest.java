@@ -31,6 +31,7 @@ public class QueueUtilsTest
 
     private static final String QUEUE_NAME = "test-queue";
     private static final String MESSAGE_TEXT = "test message";
+    private static final CloudQueueMessage MESSAGE = new CloudQueueMessage(MESSAGE_TEXT);
 
     private CloudQueue queue;
 
@@ -84,14 +85,13 @@ public class QueueUtilsTest
         }
         {
             {
-                final CloudQueueMessage message = new CloudQueueMessage(MESSAGE_TEXT);
-                queueUtils.addMessageToQueue(QUEUE_NAME, message);
+
+                queueUtils.addMessageToQueue(QUEUE_NAME, MESSAGE);
             }
             {
-                final CloudQueueMessage message = new CloudQueueMessage(MESSAGE_TEXT);
                 when(queue.exists()).thenReturn(false);
                 try {
-                    queueUtils.addMessageToQueue(QUEUE_NAME, message);
+                    queueUtils.addMessageToQueue(QUEUE_NAME, MESSAGE);
                     fail("Expected QueueNotFoundException not thrown!");
                 } catch (QueueNotFoundException e) {
                     ; // NO-OP; expected
@@ -108,13 +108,6 @@ public class QueueUtilsTest
             CloudQueue cloudQueue = queueUtils.getQueueReference(QUEUE_NAME);
             assertNotNull(cloudQueue);
             assertTrue(cloudQueue.exists());
-        }
-        {
-            when(queue.exists()).thenReturn(false);
-            CloudQueue cloudQueue = queueUtils.getQueueReference(QUEUE_NAME);
-            assertNotNull(cloudQueue);
-            assertTrue(!cloudQueue.exists());
-            when(queue.exists()).thenReturn(true);
         }
     }
 }
