@@ -4,6 +4,7 @@ import com.microsoft.azure.storage.CloudStorageAccount;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.blob.*;
 import com.tavi.storage.exceptions.BlobNotFoundException;
+import com.tavi.storage.exceptions.ContainerNotFoundException;
 
 import java.io.File;
 import java.io.IOException;
@@ -157,8 +158,12 @@ public class BlobUtils
      * @throws MalformedURLException
      */
     public URL createSharedBlobURL(String containerName, String blobName, String groupPolicyIdentifier, int expireTimeSeconds, EnumSet<SharedAccessBlobPermissions> permissions)
-            throws URISyntaxException, StorageException, InvalidKeyException, MalformedURLException {
+            throws URISyntaxException, StorageException, InvalidKeyException, MalformedURLException, ContainerNotFoundException {
         CloudBlobContainer container = client.getContainerReference(containerName);
+
+        if(!container.exists())
+            throw new ContainerNotFoundException("Unable to locate container " + containerName);
+
         CloudBlob blob = container.getBlobReferenceFromServer(blobName);
 
         Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
@@ -186,7 +191,7 @@ public class BlobUtils
      * @throws MalformedURLException
      */
     public URL createSharedBlobURL(String containerName, String blobName, String groupPolicyIdentifier, int expireTimeSeconds, SharedAccessBlobPermissions ... permissions)
-            throws URISyntaxException, StorageException, InvalidKeyException, MalformedURLException {
+            throws URISyntaxException, StorageException, InvalidKeyException, MalformedURLException, ContainerNotFoundException {
         EnumSet<SharedAccessBlobPermissions> sap = (permissions != null && permissions.length > 0) ? EnumSet.of(permissions[0], permissions) : EnumSet.noneOf(SharedAccessBlobPermissions.class);
         return createSharedBlobURL(containerName, blobName, groupPolicyIdentifier, expireTimeSeconds, sap);
     }
@@ -204,7 +209,7 @@ public class BlobUtils
      * @throws MalformedURLException
      */
     public URL createSharedBlobURL(String containerName, String blobName, int expireTimeSeconds, EnumSet<SharedAccessBlobPermissions> permissions)
-            throws URISyntaxException, StorageException, InvalidKeyException, MalformedURLException {
+            throws URISyntaxException, StorageException, InvalidKeyException, MalformedURLException, ContainerNotFoundException {
         return createSharedBlobURL(containerName, blobName, null, expireTimeSeconds, permissions);
     }
 
@@ -221,7 +226,7 @@ public class BlobUtils
      * @throws MalformedURLException
      */
     public URL createSharedBlobURL(String containerName, String blobName, int expireTimeSeconds, SharedAccessBlobPermissions ... permissions)
-            throws URISyntaxException, StorageException, InvalidKeyException, MalformedURLException {
+            throws URISyntaxException, StorageException, InvalidKeyException, MalformedURLException, ContainerNotFoundException {
         return createSharedBlobURL(containerName, blobName, null, expireTimeSeconds, permissions);
     }
 
